@@ -1,38 +1,103 @@
 #!/bin/bash
 
-echo "🌀 Updating system..."
-pacman -Syu --noconfirm
+# --- CONFIGURATION ---
+DOTFILES_DIR="$HOME/my-dotfiles"
+LOG_FILE="install.log"
 
-echo "📦 Đang cài đặt dotfiles..."
+# --- HELPER FUNCTIONS ---
+log() {
+    echo -e "\e[32m[INFO]\e[0m $1"
+}
 
-sudo pacman -S --needed hyprland waybar kitty fish ttf-jetbrains-mono-nerd hyprpaper
-# Hyprland
-mkdir -p ~/.config/hypr
-cp -r ./hypr/* ~/.config/hypr/
+error() {
+    echo -e "\e[31m[ERROR]\e[0m $1"
+}
 
-# Waybar
-rm -rf ~/.config/waybar/*
-mkdir -p ~/.config/waybar
-cp -r ./waybar/* ~/.config/waybar/
-
-# Kitty
-rm -rf ~/.config/kitty/*
-mkdir -p ~/.config/kitty
-cp -r ./kitty/* ~/.config/kitty/
-
-# Fish
-rm -rf ~/.config/fish/*
-mkdir -p ~/.config/fish
-cp -r ./fish/* ~/.config/fish/
-
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)"
-
-if ! command -v yay &>/dev/null; then
-    echo "Cài yay..."
-    git clone https://aur.archlinux.org/yay.git
-    cd yay && makepkg -si --noconfirm
-    cd .. && rm -rf yay
+# 1. Kiểm tra quyền Root (Safety Check)
+if [ "$EUID" -eq 0 ]; then
+    error "Vui lòng KHÔNG chạy script này bằng sudo!"
+    error "Hãy chạy: ./install.sh (Script sẽ tự hỏi pass sudo khi cần)"
+    exit 1
 fi
 
-chsh -s /usr/bin/fish
+# 2. Update System
+log "🌀 Updating system..."
+sudo pacman -Syu --noconfirm
+
+# 3. Cài đặt các gói cơ bản (Official Repo)
+log "📦 Installing Core Packages..."
+PACKAGES=(
+    "hyprland"
+    "waybar"
+    "kitty"
+    "fish"
+    "ttf-jetbrains-mono-nerd"
+    "stow" # Quan trọng: Cần stow để link config
+    "git"
+    "base-devel"
+    "hyprlock"     # Màn hình khóa
+    "hypridle"     # Tự động khóa
+    "wl-clipboard" # Clipboard
+    "cliphist"     # Clipboard Manager
+    "pipewire"     # Audio
+    "wireplumber"
+    "polkit-kde-agent" # Auth Agent (hoặc hyprpolkitagent)
+    "unzip"
+)
+
+# Cài gói (loại bỏ những gói đã cài rồi để chạy cho nhanh)
+sudo pacman -S --needed --noconfirm "${PACKAGES[@]}"
+
+# 4. Cài đặt YAY (AUR Helper) nếu chưa có
+if ! command -v yay &>/dev/null; then
+    log "⚡ Installing yay (AUR Helper)..."
+    git clone https://aur.archlinux.org/yay.git
+    cd yay || exit
+    makepkg -si --noconfirm
+    cd .. && rm -rf yay
+else
+    log "✅ Yay is already installed."
+fi
+
+# 5. Cài đặt các gói AUR (Những món đồ chơi xịn)
+log "✨ Installing AUR Packages..."
+AUR_PACKAGES=(
+    "wlogout"                  # Menu thoát xịn
+    "swayosd-git"              # OSD volume/brightness
+    "mpvpaper"                 # Video background
+    "sddm-astronaut-theme-git" # Theme login đẹp (Cài bằng gói AUR an toàn hơn curl script)
+)
+
+yay -S --needed --noconfirm "${AUR_PACKAGES[@]}"
+
+log "🔗 Linking Dotfiles using GNU Stow..."
+
+log "   -> Backing up old configs to ~/.config_backup..."
+mkdir -p ~/.config_backup
+[ -d ~/.config/hypr ] && mv ~/.config/hypr ~/.config_backup/
+[ -d ~/.config/waybar ] && mv ~/.config/waybar ~/.config_backup/
+[ -d ~/.config/kitty ] && mv ~/.config/kitty ~/.config_backup/
+[ -d ~/.config/nvim ] && mv ~/.config/nvim ~/.config_backup/
+
+# Chạy Stow
+cd "$DOTFILES_DIR" || exit
+stow hypr
+stow waybar
+stow kitty
+stow nvim
+
+log "✅ Dotfiles linked successfully!"
+
+# 7. Setup Shell
+if [ "$SHELL" != "/usr/bin/fish" ]; then
+    log "🐠 Changing default shell to Fish..."
+    chsh -s /usr/bin/fish
+fi
+
+log "🚀 SETUP COMPLETE! Please reboot your system."chsh -s /usr/bin/fish
 echo -e "\e[32m✅ All done! Enjoy your setup 🚀\e[0m"
+
+# if want to download wofi config to dotfiles, run these commands:
+# mkdir -p ~/my-dotfiles/wofi/.config
+# mv ~/.config/wofi ~/my-dotfiles/wofi/.config/
+# cd ~/my-dotfiles && stow wofi
