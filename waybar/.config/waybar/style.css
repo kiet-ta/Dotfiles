@@ -24,7 +24,10 @@ window#waybar {
 #network,
 #cpu,
 #memory,
-#bluetooth {
+#bluetooth,
+#temperature,  
+#disk          
+{
     background: rgba(15, 15, 25, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
@@ -167,6 +170,46 @@ window#waybar {
 #bluetooth:hover,
 #cpu:hover,
 #memory:hover {
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+#temperature {
+    color: #ff006e;
+    font-weight: 500;
+}
+
+#temperature.critical {
+    color: #ff3366;
+    animation: critical-pulse 1s ease-in-out infinite;
+    border-color: rgba(255, 51, 102, 0.3);
+}
+
+/* Disk styling */
+#disk {
+    color: #b16286; /* Màu tím trầm */
+    font-weight: 500;
+}
+
+#disk:hover {
+    color: #d3869b;
+    box-shadow: 0 0 15px rgba(211, 134, 155, 0.2);
+}
+
+/* Backlight styling */
+#backlight {
+    color: #fabd2f; /* Màu vàng sáng */
+    font-weight: 500;
+}
+
+#backlight:hover {
+    box-shadow: 0 0 15px rgba(250, 189, 47, 0.2);
+}
+
+/* Hover effects update for new modules */
+#temperature:hover,
+#disk:hover,
+#backlight:hover {
     background: rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
