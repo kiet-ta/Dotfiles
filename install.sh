@@ -59,13 +59,12 @@ else
     log "✅ Yay is already installed."
 fi
 
-# 5. Cài đặt các gói AUR (Những món đồ chơi xịn)
 log "✨ Installing AUR Packages..."
 AUR_PACKAGES=(
-    "wlogout"                  # Menu thoát xịn
-    "swayosd-git"              # OSD volume/brightness
-    "mpvpaper"                 # Video background
-    "sddm-astronaut-theme-git" # Theme login đẹp (Cài bằng gói AUR an toàn hơn curl script)
+    "wlogout"
+    "swayosd"
+    "mpvpaper"
+    "sddm-astronaut-theme-git"
 )
 
 yay -S --needed --noconfirm "${AUR_PACKAGES[@]}"

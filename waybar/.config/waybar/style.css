@@ -1,276 +1,155 @@
 * {
-    font-family: JetBrainsMono Nerd Font, "Fira Code", monospace;
-    font-size: 20px;
-    font-weight: 500;
     border: none;
-    border-radius: 12px;
-    padding: 2px 8px;
-    margin: 0px 2px;
-    min-height: 26px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 0;
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 20px;
+    min-height: 0;
 }
 
 window#waybar {
     background: transparent;
-    color: #ffffff;
+    color: #cdd6f4;
 }
 
-/* Base module styling */
-#workspaces,
-#clock,
-#battery,
-#pulseaudio,
-#backlight,
-#network,
-#cpu,
-#memory,
-#bluetooth,
-#temperature,  
-#disk          
-{
-    background: rgba(15, 15, 25, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    color: #ffffff;
+tooltip {
+    background: #1e1e2e;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #11111b;
 }
 
-/* Workspace styling */
+/* Workspaces */
 #workspaces {
-    padding: 2px;
-    margin-left: 8px;
+    background-color: #1e1e2e;
+    margin: 5px 0 5px 10px;
+    padding: 0 5px;
+    border-radius: 15px;
+    border: 2px solid #11111b;
 }
 
 #workspaces button {
-    padding: 2px 4px;
-    margin: 2px;
-    color: #b4b4b4;
-    background: transparent;
-    border-radius: 8px;
-    font-weight: 500;
-    min-width: 28px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding: 0 5px;
+    background-color: transparent;
+    color: #6c7086;
 }
 
 #workspaces button:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 #workspaces button.active {
-    background: linear-gradient(135deg, #00d4ff, #8b5cf6);
-    color: #000000;
-    font-weight: 600;
-    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
-    animation: pulse-glow 2s ease-in-out infinite alternate;
+    color: #cba6f7; 
+    font-weight: bold;
 }
 
-/* Clock styling */
-#clock {
-    font-size: 20px;
-    font-weight: 800;
-    color: #ffffff;
-    background: rgba(15, 15, 25, 0.85);
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-    animation: subtle-glow 3s ease-in-out infinite alternate;
+/* Hardware Group (CPU, Memory, Temp) */
+#cpu, #memory, #temperature {
+    background-color: #1e1e2e;
+    color: #a6e3a1; 
+    margin: 5px 0px;
+    padding: 0px 10px;
+    border-top: 2px solid #11111b;
+    border-bottom: 2px solid #11111b;
 }
 
-#clock:hover {
-    box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
-}
-
-/* CPU styling */
 #cpu {
-    color: #00ff88;
-    font-weight: 500;
-}
-
-#cpu:hover {
-    border-color: rgba(0, 255, 136, 0.3);
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
-}
-
-/* Memory styling */
-#memory {
-    color: #ffaa00;
-    font-weight: 500;
-}
-
-#memory:hover {
-    border-color: rgba(255, 170, 0, 0.3);
-    box-shadow: 0 0 15px rgba(255, 170, 0, 0.2);
-}
-
-/* Battery styling */
-#battery {
-    font-weight: 500;
-}
-
-#battery.charging,
-#battery.full,
-#battery.plugged {
-    color: #00ff88;
-    border-color: rgba(0, 255, 136, 0.3);
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
-}
-
-#battery.warning {
-    color: #ffaa00;
-    border-color: rgba(255, 170, 0, 0.3);
-    box-shadow: 0 0 15px rgba(255, 170, 0, 0.2);
-    animation: warning-pulse 1.5s ease-in-out infinite;
-}
-
-#battery.critical {
-    color: #ff3366;
-    border-color: rgba(255, 51, 102, 0.3);
-    box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
-    animation: critical-pulse 1s ease-in-out infinite;
-}
-
-/* Network styling */
-#network {
-    color: #00d4ff;
-}
-
-#network.disconnected {
-    color: #ff3366;
-    animation: disconnect-flash 2s ease-in-out infinite;
-}
-
-/* Audio styling */
-#pulseaudio {
-    color: #8b5cf6;
-}
-
-#pulseaudio.muted {
-    color: #b4b4b4;
-    opacity: 0.6;
-}
-
-/* Bluetooth styling */
-#bluetooth {
-    color: #ff006e;
-}
-
-#bluetooth.connected {
-    box-shadow: 0 0 10px rgba(255, 0, 110, 0.2);
-}
-
-#bluetooth.disconnected {
-    color: #b4b4b4;
-    opacity: 0.6;
-}
-
-/* Hover effects for all modules */
-#battery:hover,
-#network:hover,
-#pulseaudio:hover,
-#bluetooth:hover,
-#cpu:hover,
-#memory:hover {
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-left: 2px solid #11111b;
+    border-radius: 15px 0 0 15px; 
+    margin-left: 15px;
 }
 
 #temperature {
-    color: #ff006e;
-    font-weight: 500;
+    border-right: 2px solid #11111b;
+    border-radius: 0 15px 15px 0; 
 }
 
-#temperature.critical {
-    color: #ff3366;
-    animation: critical-pulse 1s ease-in-out infinite;
-    border-color: rgba(255, 51, 102, 0.3);
+/* Clock (Center) */
+#clock {
+    background-color: #1e1e2e;
+    color: #fab387;
+    margin: 5px 0;
+    padding: 0 15px;
+    border-radius: 15px;
+    border: 2px solid #11111b;
+    font-weight: bold;
 }
 
-/* Disk styling */
-#disk {
-    color: #b16286; /* Màu tím trầm */
-    font-weight: 500;
+/* Right Side Modules */
+
+/* Group Controls (Net, BT, Pulse) */
+#network, #bluetooth, #pulseaudio {
+    background-color: #1e1e2e;
+    color: #89b4fa; /* Xanh dương */
+    padding: 0 12px;
+    margin: 5px 0;
+    border-top: 2px solid #11111b;
+    border-bottom: 2px solid #11111b;
+}
+#network {
+    border-left: 2px solid #11111b;
+    border-radius: 15px 0 0 15px;
+}
+#pulseaudio {
+    border-right: 2px solid #11111b;
+    border-radius: 0 15px 15px 0;
+    margin-right: 10px;
 }
 
-#disk:hover {
-    color: #d3869b;
-    box-shadow: 0 0 15px rgba(211, 134, 155, 0.2);
+/* Group Display (Nightlight, Backlight) */
+#custom-nightlight, #backlight {
+    background-color: #1e1e2e;
+    color: #f9e2af; /* Vàng */
+    padding: 0 12px;
+    margin: 5px 0;
+    border-top: 2px solid #11111b;
+    border-bottom: 2px solid #11111b;
 }
-
-/* Backlight styling */
+#custom-nightlight {
+    border-left: 2px solid #11111b;
+    border-radius: 15px 0 0 15px;
+}
 #backlight {
-    color: #fabd2f; /* Màu vàng sáng */
-    font-weight: 500;
+    border-right: 2px solid #11111b;
+    border-radius: 0 15px 15px 0;
+    margin-right: 10px;
 }
 
-#backlight:hover {
-    box-shadow: 0 0 15px rgba(250, 189, 47, 0.2);
+/* Battery */
+#battery {
+    background-color: #1e1e2e;
+    color: #a6adc8;
+    margin: 5px 10px 5px 0;
+    padding: 0 15px;
+    border-radius: 15px;
+    border: 2px solid #11111b;
+}
+#battery.charging, #battery.plugged {
+    color: #a6e3a1;
+}
+#battery.critical:not(.charging) {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
-/* Hover effects update for new modules */
-#temperature:hover,
-#disk:hover,
-#backlight:hover {
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+/* Power Button */
+#custom-power {
+    background-color: #f38ba8; /* Đỏ */
+    color: #11111b;
+    margin: 5px 10px 5px 0;
+    padding: 0 15px;
+    border-radius: 15px;
+    font-weight: bold;
 }
 
-/* Animations */
-@keyframes pulse-glow {
-    0% {
-        box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
-    }
-    100% {
-        box-shadow: 0 4px 25px rgba(0, 212, 255, 0.6);
-    }
-}
-
-@keyframes subtle-glow {
-    0% {
-        box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-    }
-    100% {
-        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-    }
-}
-
-@keyframes warning-pulse {
-    0% {
-        opacity: 1;
-        box-shadow: 0 0 15px rgba(255, 170, 0, 0.2);
-    }
-    50% {
-        opacity: 0.8;
-        box-shadow: 0 0 20px rgba(255, 170, 0, 0.4);
-    }
-    100% {
-        opacity: 1;
-        box-shadow: 0 0 15px rgba(255, 170, 0, 0.2);
-    }
-}
-
-@keyframes critical-pulse {
-    0% {
-        opacity: 1;
-        box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
-    }
-    50% {
-        opacity: 0.7;
-        box-shadow: 0 0 30px rgba(255, 51, 102, 0.6);
-    }
-    100% {
-        opacity: 1;
-        box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
-    }
-}
-
-@keyframes disconnect-flash {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 1;
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
     }
 }
